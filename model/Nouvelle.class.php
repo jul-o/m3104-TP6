@@ -35,6 +35,13 @@
         return $this->nomLocalImage;
     }
 
+    function downloadImage($node, $nomLocal){
+      $this->urlImage = $node->attributes->getNamedItem('url')->textContent;
+
+      $this->nomLocalImage = $nomLocal.".jpg";
+      file_put_contents("../images/".$this->nomLocalImage, file_get_contents($this->urlImage));
+    }
+
     // Charge les attributs de la nouvelle avec les informations du noeud XML
     function update(DOMElement $item){
       $this->titre = $item->getElementsByTagName('title')->item(0)->textContent;
@@ -44,10 +51,7 @@
       $nodeList = $item->getElementsByTagName('enclosure');
       if($nodeList->length != 0){
         $node = $nodeList->item(0);
-        $this->urlImage = $node->attributes->getNamedItem('url')->textContent;
-
-        $this->nomLocalImage = $this->titre.".jpg";
-        file_put_contents("../images/".$this->nomLocalImage, file_get_contents($this->urlImage));
+        $this->downloadImage($node, $this->titre);
 
       }else{
         $this->urlImage = "";
