@@ -35,26 +35,26 @@
         return $this->nomLocalImage;
     }
 
+    //Télécharge une image à partir du noeud père de cette image et lui donne un nom local
     function downloadImage($node, $nomLocal){
       $this->urlImage = $node->attributes->getNamedItem('url')->textContent;
-
       $this->nomLocalImage = $nomLocal.".jpg";
       file_put_contents("../images/".$this->nomLocalImage, file_get_contents($this->urlImage));
     }
 
     // Charge les attributs de la nouvelle avec les informations du noeud XML
     function update(DOMElement $item){
-      $this->titre = $item->getElementsByTagName('title')->item(0)->textContent;
-      $this->date = $item->getElementsByTagName('pubDate')->item(0)->textContent;
-      $this->description = $item->getElementsByTagName('description')->item(0)->textContent;
-      $this->url = $item->getElementsByTagName('link')->item(0)->textContent;
-      $nodeList = $item->getElementsByTagName('enclosure');
-      if($nodeList->length != 0){
-        $node = $nodeList->item(0);
-        $this->downloadImage($node, $this->titre);
+      $this->titre = $item->getElementsByTagName('title')->item(0)->textContent;               //titre mis à jour
+      $this->date = $item->getElementsByTagName('pubDate')->item(0)->textContent;              //date de publication mise à jour
+      $this->description = $item->getElementsByTagName('description')->item(0)->textContent;   //description mis à jour
+      $this->url = $item->getElementsByTagName('link')->item(0)->textContent;                  //lien de la nouvelle mis à jour
+      $nodeList = $item->getElementsByTagName('enclosure');                                    //
+      if($nodeList->length != 0){                                                              //si il y a une "feuille"
+        $node = $nodeList->item(0);                                                            //télécharge une image et met à jour l'url image
+        $this->downloadImage($node, $this->titre);                                             //
 
-      }else{
-        $this->urlImage = "";
+      }else{                                                                                   //
+        $this->urlImage = "";                                                                  //sinon met l'url image à vide
       }
     }
   }
