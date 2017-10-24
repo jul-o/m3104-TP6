@@ -117,6 +117,8 @@ class DAO {
    * @return bool        true si il y est, false sinon
    */
   function userExists($nom): bool{
-
+    $query = "select login from utilisateur where login = :nom";
+    $stmt = $this->db->prepare($query);
+    //a finir
   }
 }
