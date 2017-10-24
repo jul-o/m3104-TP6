@@ -103,4 +103,13 @@ class DAO {
                          ":url" => $url,
                          ":image" => $image));
   }
+
+  /**
+   * vérifie que le login est dans les utilisateurs de la BD
+   * @param  [type] $nom [description]
+   * @return bool        true si il y est, false sinon
+   */
+  function userExists($nom): bool{
+
+  }
 }
