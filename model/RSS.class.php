@@ -50,6 +50,9 @@ class RSS {
     $this->nouvelles = array();
 
     //peut etre manque identifiants
+    $mask = "../images/*";
+    array_map("unlink", glob($mask));
+
     foreach ($items as $key => $value) {
       $nouvelle = new Nouvelle();
       $nouvelle->update($value);

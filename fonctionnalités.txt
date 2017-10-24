@@ -1,0 +1,17 @@
+pageLogin:
+  Page de login + lien vers pageInscription
+
+pageInscription:
+  créer un nouvel utilisateur
+
+pageHome:
+  Page avec possibilité de s'abonner à un flux (lien à entrer) + lien vers pageAbonnements
+
+pageAbonnements:
+  Page avec des liens vers les pageFlux auxquels on est abonné
+
+pageFlux:
+  Mosaïque de nouvelles : des liens vers des pageNouvelle
+
+pageNouvelle:
+  affiche la nouvelle
