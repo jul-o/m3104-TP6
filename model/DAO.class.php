@@ -94,7 +94,7 @@ class DAO {
     $url = $n->url();
     $image = $n->nomLocalImage();
 
-    $query = "insert into nouvelle values :date, :titre, :description, :url, :image, :RSS_id";
+    $query = "insert into nouvelle values (:date, :titre, :description, :url, :image, :RSS_id)";
     $stmt = $this->db->prepare($query);
     $stmt->execute(array(":date" => $date,
                          ":titre" => $titre,
@@ -104,14 +104,33 @@ class DAO {
                          ":image" => $image));
   }
 
+  function loginExists($nom){
+    $query = "SELECT login from utilisateur where login = :nom";
+    $stmt=$this->db->prepare($query);
+    $stmt->execute(array(":nom" => $nom));
+    $tab = $stmt->fetchAll(PDO::FETCH_NUM);
+    return isset($tab[0]);
+  }
+
   /**
-   * vérifie que le login est dans les utilisateurs de la BD
-   * @param  [type] $nom [description]
-   * @return bool        true si il y est, false sinon
+   * vérifie que $nom correspond à $psswd
+   * @param  string $nom   login
+   * @param  string $psswd mot de passe
+   * @return bool        true si oui, false sinon
    */
-  function userExists($nom): bool{
-    $query = "select login from utilisateur where login = :nom";
+  function correctPassword($nom, $psswd){
+    $query = "select login from utilisateur where login = :nom and mp = :psswd";
     $stmt = $this->db->prepare($query);
-    //a finir
+    $stmt->execute(array(":nom" => $nom,
+                         ":psswd" => $psswd));
+    $tab = $stmt->fetchAll(PDO::FETCH_NUM);
+    return (isset($tab[0]));
+  }
+
+  function inscription($nom, $mp){
+    $query = "INSERT INTO utilisateur VALUES (:login, :mp)";
+    $stmt = $this->db->prepare($query);
+    $stmt->execute(array(":login" => $nom,
+                         ":mp" => $mp));
   }
 }
