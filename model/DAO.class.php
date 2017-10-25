@@ -19,13 +19,30 @@ class DAO {
   // Methodes CRUD sur RSS
   //////////////////////////////////////////////////////////
 
-  // Crée un nouveau flux à partir d'une URL
+  function rssConnu($url): bool{
+    $query = "select url from rss where url = :url";
+    $stmt = $this->db->prepare($query);
+    $stmt->execute(array(":url" => $url));
+    $tab = $stmt->fetchAll(PDO::FETCH_NUM);
+    return isset($tab[0]);
+  }
+
+  //méthode réadaptée car ne faisait pas ce qu'il fallait
+  // Crée un nouveau flux à partir d'une URL et l'insère dans la BD
   // Si le flux existe déjà on ne le crée pas
   function createRSS($url) {
     $rss = $this->readRSSfromURL($url);
-    if ($rss == NULL) {
+    if(!$this->rssConnu($url)){
+      $query = "insert into rss (titre, url, date) values (:titre, :url, :date)";
+      $stmt = $this->db->prepare($query);
+      $stmt->execute(array(":titre" => $rss->titre(),
+                           ":url" => $url,
+                           ":date" => $rss->date()));
+
+    }
+    /*if ($rss == NULL) {
       try {
-        $q = "INSERT INTO RSS (url) VALUES ('$url')";
+        $q = "INSERT INTO RSS (titre, url, date) VALUES ('$rss', '$url')";
         $r = $this->db->exec($q);
         if ($r == 0) {
           die("createRSS error: no rss inserted\n");
@@ -37,7 +54,7 @@ class DAO {
     } else {
       // Retourne l'objet existant
       return $rss;
-    }
+    }*/
   }
 
   // Acces à un objet RSS à partir de son URL
@@ -141,5 +158,37 @@ class DAO {
     $stmt = $this->db->prepare($query);
     $stmt->execute(array(":login" => $nom,
                          ":mp" => $mp));
+  }
+
+  /**
+   * Vérifie qu'un flux existe et l'ajoute à la liste des abonnements
+   * @param  string $urlRSS url du flux
+   * @param  string $login  login
+   * @return bool           abo réussi
+   */
+  function abonnement($urlRSS, $login): bool{
+    if($this->urlExists($urlRSS)){
+      $this->createRSS($urlRSS);
+      // a finir
+      $req = "insert into abonnement values";
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Vérifie qu'un url existe
+   * @param  [string] $urlRSS [url à vérifier]
+   * @return [bool]
+   */
+  function urlExists($urlRSS): bool{
+    $F=@fopen($urlRSS,"r");
+
+    if($F){
+      fclose($F);
+      return true;
+    }else {
+      return false;
+    }
   }
 }
