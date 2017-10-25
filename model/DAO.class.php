@@ -41,13 +41,15 @@ class DAO {
   }
 
   // Acces à un objet RSS à partir de son URL
+  // renvoi le flux RSS après sa mise à jour
   function readRSSfromURL($url) {
     $rss = new RSS($url);
     $rss->update();
     return $rss;
   }
 
-  // Met à jour un flux
+
+  // Met à jour un flux RSS donné
   function updateRSS(RSS $rss) {
     // Met à jour uniquement le titre et la date
     $titre = $this->db->quote($rss->titre());
@@ -66,7 +68,12 @@ class DAO {
   // Methodes CRUD sur Nouvelle
   //////////////////////////////////////////////////////////
 
-  // Acces à une nouvelle à partir de son titre et l'ID du flux
+  /**
+   * Renvoie une nouvelle à partir d'un titre et de l'id RSS
+   * @param   $titre  titre de la nouvelle recherchée
+   * @param   $RSS_id identifiant du flux RSS où se trouve la nouvelle
+   * @return la nouvelle définie précédemment
+   */
   function readNouvellefromTitre($titre,$RSS_id) {
     $query = "select * from RSS where id = :RSS_id";
     $stmt = $this->db->prepare($query);
@@ -85,8 +92,11 @@ class DAO {
 
   }
 
-  // Crée une nouvelle dans la base à partir d'un objet nouvelle
-  // et de l'id du flux auquelle elle appartient
+  /**
+   * Ajoute une nouvelle dans la BD à partir
+   * @param  de l'objet Nouvelle $n
+   * @param  et de l'identifiant du flux RSS correspondant
+   */
   function createNouvelle(Nouvelle $n, $RSS_id) {
     $titre = $n->titre();
     $date = $n->date();
@@ -113,10 +123,9 @@ class DAO {
   }
 
   /**
-   * vérifie que $nom correspond à $psswd
-   * @param  string $nom   login
-   * @param  string $psswd mot de passe
-   * @return bool        true si oui, false sinon
+   * vérifie que le login est dans les utilisateurs de la BD
+   * @param  $nom le login entré
+   * @return bool true si il y est, false sinon
    */
   function correctPassword($nom, $psswd){
     $query = "select login from utilisateur where login = :nom and mp = :psswd";

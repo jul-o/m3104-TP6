@@ -28,10 +28,12 @@ class RSS {
   function nouvelles() {
     return $this->nouvelles;
   }
-  // Récupère un flux à partir de son URL
+
+  // Récupère un flux RSS à partir de son URL
   function update(){
-    // Cree un objet pour accueillir le contenu du RSS : un document XML
+    // Crée un document XML pour accueillir le contenu du RSS
     $doc = new DOMDocument;
+
     //Telecharge le fichier XML dans $rss
     $doc->load($this->url);
 
@@ -41,23 +43,22 @@ class RSS {
     // Met à jour le titre dans l'objet
     $this->titre = $nodeList->item(0)->textContent;
 
-    //MAJ Date
-    ///!\ s'actualise peut-être avec unix, à vérifier
+    //Met à jour de la Date de mise à jour du flux
     $this->date = date('Y-m-d');
 
-    //MAJ des nouvelles
+    //Mise à jour des nouvelles du flux
     $items = $doc->getElementsByTagName("item");
     $this->nouvelles = array();
 
-    //peut etre manque identifiants
+    //supprime les images local du précédant flux
     $mask = "../images/*";
     array_map("unlink", glob($mask));
 
+  //Crée et met à jour les nouvelles à partir du flux
     foreach ($items as $key => $value) {
       $nouvelle = new Nouvelle();
       $nouvelle->update($value);
       $this->nouvelles[] = $nouvelle;
     }
-
   }
 }
