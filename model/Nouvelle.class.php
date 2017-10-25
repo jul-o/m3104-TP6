@@ -35,14 +35,24 @@
         return $this->nomLocalImage;
     }
 
-    //Télécharge une image à partir du noeud père de cette image et lui donne un nom local
+    /**
+     * Télécharge sur le serveur l'image d'une nouvelle à partir
+     * @param  du noeud père $node
+     * @param  et du nom local donné à l'image $nomLocal
+     */
     function downloadImage($node, $nomLocal){
       $this->urlImage = $node->attributes->getNamedItem('url')->textContent;
       $this->nomLocalImage = $nomLocal.".jpg";
       file_put_contents("../images/".$this->nomLocalImage, file_get_contents($this->urlImage));
     }
 
+
     // Charge les attributs de la nouvelle avec les informations du noeud XML
+    /**
+     * Met à jour les attributs de la nouvelle à partir
+     * @param  du noeud XML DOMElement $item
+     * et télécharge les images localement
+     */
     function update(DOMElement $item){
       $this->titre = $item->getElementsByTagName('title')->item(0)->textContent;               //titre mis à jour
       $this->date = $item->getElementsByTagName('pubDate')->item(0)->textContent;              //date de publication mise à jour

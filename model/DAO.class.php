@@ -72,7 +72,7 @@ class DAO {
    * Renvoie une nouvelle à partir d'un titre et de l'id RSS
    * @param   $titre  titre de la nouvelle recherchée
    * @param   $RSS_id identifiant du flux RSS où se trouve la nouvelle
-   * @return la nouvelle
+   * @return la nouvelle définie précédemment
    */
   function readNouvellefromTitre($titre,$RSS_id) {
     $query = "select * from RSS where id = :RSS_id";
@@ -92,8 +92,11 @@ class DAO {
 
   }
 
-  // Crée une nouvelle dans la base à partir d'un objet nouvelle
-  // et de l'id du flux auquelle elle appartient
+  /**
+   * Ajoute une nouvelle dans la BD à partir
+   * @param  de l'objet Nouvelle $n
+   * @param  et de l'identifiant du flux RSS correspondant
+   */
   function createNouvelle(Nouvelle $n, $RSS_id) {
     $titre = $n->titre();
     $date = $n->date();
@@ -113,8 +116,8 @@ class DAO {
 
   /**
    * vérifie que le login est dans les utilisateurs de la BD
-   * @param  [type] $nom [description]
-   * @return bool        true si il y est, false sinon
+   * @param  $nom le login entré
+   * @return bool true si il y est, false sinon
    */
   function userExists($nom): bool{
     $query = "select login from utilisateur where login = :nom";
