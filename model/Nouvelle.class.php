@@ -46,6 +46,13 @@
       file_put_contents("../images/".$this->nomLocalImage, file_get_contents($this->urlImage));
     }
 
+    function update(DOMElement $item){
+      $this->titre = $item->getElementsByTagName('title')->item(0)->textContent;               //titre mis à jour
+      $this->date = $item->getElementsByTagName('pubDate')->item(0)->textContent;              //date de publication mise à jour
+      $this->description = $item->getElementsByTagName('description')->item(0)->textContent;   //description mis à jour
+      $this->url = $item->getElementsByTagName('link')->item(0)->textContent;                  //lien de la nouvelle mis à jour
+      $nodeList = $item->getElementsByTagName('enclosure');
+    }
 
     // Charge les attributs de la nouvelle avec les informations du noeud XML
     /**
@@ -53,15 +60,17 @@
      * @param  du noeud XML DOMElement $item
      * et télécharge les images localement
      */
-    function update(DOMElement $item){
+    function fullUpdate(DOMElement $item, $titreRSS, $numImage){
       $this->titre = $item->getElementsByTagName('title')->item(0)->textContent;               //titre mis à jour
       $this->date = $item->getElementsByTagName('pubDate')->item(0)->textContent;              //date de publication mise à jour
       $this->description = $item->getElementsByTagName('description')->item(0)->textContent;   //description mis à jour
       $this->url = $item->getElementsByTagName('link')->item(0)->textContent;                  //lien de la nouvelle mis à jour
       $nodeList = $item->getElementsByTagName('enclosure');                                    //
       if($nodeList->length != 0){                                                              //si il y a une "feuille"
-        $node = $nodeList->item(0);                                                            //télécharge une image et met à jour l'url image
-        $this->downloadImage($node, $this->titre);                                             //
+        $node = $nodeList->item(0);
+        $nomLocal = $titreRSS.$numImage;
+                                                                  //télécharge une image et met à jour l'url image
+        $this->downloadImage($node, $nomLocal);                                             //
 
       }else{                                                                                   //
         $this->urlImage = "";                                                                  //sinon met l'url image à vide

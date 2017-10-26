@@ -6,6 +6,7 @@ require_once("../model/DAO.class.php");
 $id = $_GET['id'] ?? 0;
 if ($id){
   $rss = $dao->getRSS($id);
+  $rss->fullUpdate();
   $nouvelles = $rss->nouvelles();
   $titre = $rss->titre();
 

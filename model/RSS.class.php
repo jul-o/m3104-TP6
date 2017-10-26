@@ -29,6 +29,32 @@ class RSS {
     return $this->nouvelles;
   }
 
+  function fullUpdate(){
+    // Crée un document XML pour accueillir le contenu du RSS
+    $doc = new DOMDocument;
+    //Telecharge le fichier XML dans $rss
+    $doc->load($this->url);
+    // Recupère la liste (DOMNodeList) de tous les elements de l'arbre 'title'
+    $nodeList = $doc->getElementsByTagName('title');
+    // Met à jour le titre dans l'objet
+    $this->titre = $nodeList->item(0)->textContent;
+    //Met à jour de la Date de mise à jour du flux
+    $this->date = date('Y-m-d');
+    //Mise à jour des nouvelles du flux
+    $items = $doc->getElementsByTagName("item");
+    $this->nouvelles = array();
+
+    //supprime les images local du précédant flux
+    $mask = "../images/".$this->titre."*";
+    array_map("unlink", glob($mask));
+
+  //Crée et met à jour les nouvelles à partir du flux
+    foreach ($items as $key => $value) {
+      $nouvelle = new Nouvelle();
+      $nouvelle->fullUpdate($value, $this->titre, $key);
+      $this->nouvelles[] = $nouvelle;
+    }
+  }
   // Récupère un flux RSS à partir de son URL
   function update(){
     // Crée un document XML pour accueillir le contenu du RSS
@@ -51,8 +77,8 @@ class RSS {
     $this->nouvelles = array();
 
     //supprime les images local du précédant flux
-    /*$mask = "../images/*";
-    array_map("unlink", glob($mask));*/
+    $mask = "../images/".$this->titre."*";
+    array_map("unlink", glob($mask));
 
   //Crée et met à jour les nouvelles à partir du flux
     foreach ($items as $key => $value) {
@@ -60,5 +86,6 @@ class RSS {
       $nouvelle->update($value);
       $this->nouvelles[] = $nouvelle;
     }
+    $this->nouvelles[0]->fullUpdate($items[0], $this->titre, 0);
   }
 }

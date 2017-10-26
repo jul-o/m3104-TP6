@@ -15,3 +15,13 @@ pageFlux:
 
 pageNouvelle:
   affiche la nouvelle
+
+
+
+
+
+
+A FAIRE : Bouton home
+  Bouton se désabonner
+
+PLUS TARD : proposer un catalogue de flux
