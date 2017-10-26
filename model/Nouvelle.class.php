@@ -35,6 +35,16 @@
         return $this->nomLocalImage;
     }
 
+    function fileExists($url){
+      $F=@fopen($urlRSS,"r");
+      if($F){
+        fclose($F);
+        return true;
+      }else {
+        return false;
+      }
+    }
+
     /**
      * Télécharge sur le serveur l'image d'une nouvelle à partir
      * @param  du noeud père $node
@@ -43,7 +53,11 @@
     function downloadImage($node, $nomLocal){
       $this->urlImage = $node->attributes->getNamedItem('url')->textContent;
       $this->nomLocalImage = $nomLocal.".jpg";
-      file_put_contents("../images/".$this->nomLocalImage, file_get_contents($this->urlImage));
+
+
+      if(!file_exists("../images/".$this->nomLocalImage)){
+        file_put_contents("../images/".$this->nomLocalImage, file_get_contents($this->urlImage));
+      }
     }
 
     function update(DOMElement $item){

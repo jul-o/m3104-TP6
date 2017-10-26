@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Les nouvelles du Monde</title>
+    <title><?=$data['titre']?></title>
   </head>
   <body>
     <h1><?=$data['titre']?></h1>
