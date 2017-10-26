@@ -84,6 +84,7 @@
         $node = $nodeList->item(0);
         //$nomLocal = $titreRSS.$numImage;
         $nomLocal = $this->titre;
+        $nomLocal = str_replace('"', ' ', $nomLocal);
                                                                   //télécharge une image et met à jour l'url image
         $this->downloadImage($node, $nomLocal);                                             //
 
