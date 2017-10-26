@@ -85,6 +85,14 @@ class DAO {
     return $rss;
   }
 
+  function getURLRSSFromName($name){
+    $req = "select url from RSS where titre = :name";
+    $stmt = $this->db->prepare($req);
+    $stmt->execute(array(":name" => $name));
+    $tab = $stmt->fetch(PDO::FETCH_NUM);
+    return $tab[0];
+  }
+
   //////////////////////////////////////////////////////////
   // Methodes CRUD sur Nouvelle
   //////////////////////////////////////////////////////////
@@ -233,5 +241,13 @@ class DAO {
     $stmt->execute(array(":login" => $login,
                          ":rssID" => $rssID));
 
+  }
+
+  function getFluxConnus(){
+    $req = "select titre, url from rss";
+    $stmt = $this->db->prepare($req);
+    $stmt->execute();
+    $tab = $stmt->fetchAll(PDO::FETCH_NUM);
+    return $tab;
   }
 }

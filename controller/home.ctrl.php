@@ -8,6 +8,7 @@
 
   require_once("../view/homeHead.view.php");
 
+  $data['fluxConnus'] = $dao->getFluxConnus();
   //zone de texte pour ajouter un flux à ses abo
   require_once("../view/abonnement.view.php");
 
