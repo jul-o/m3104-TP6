@@ -30,7 +30,7 @@ class DAO {
   //méthode réadaptée car ne faisait pas ce qu'il fallait
   // Crée un nouveau flux à partir d'une URL et l'insère dans la BD
   // Si le flux existe déjà on ne le crée pas
-  function createRSS($url) {
+  function createRSS($url): RSS {
     $rss = $this->readRSSfromURL($url);
     if(!$this->rssConnu($url)){
       $query = "insert into rss (titre, url, date) values (:titre, :url, :date)";
@@ -40,21 +40,7 @@ class DAO {
                            ":date" => $rss->date()));
 
     }
-    /*if ($rss == NULL) {
-      try {
-        $q = "INSERT INTO RSS (titre, url, date) VALUES ('$rss', '$url')";
-        $r = $this->db->exec($q);
-        if ($r == 0) {
-          die("createRSS error: no rss inserted\n");
-        }
-        return $this->readRSSfromURL($url);
-      } catch (PDOException $e) {
-        die("PDO Error :".$e->getMessage());
-      }
-    } else {
-      // Retourne l'objet existant
-      return $rss;
-    }*/
+    return $rss;
   }
 
   // Acces à un objet RSS à partir de son URL
@@ -79,6 +65,24 @@ class DAO {
     } catch (PDOException $e) {
       die("PDO Error :".$e->getMessage());
     }
+  }
+
+  function getRSSID($rss): int{
+    $req = "select id from rss where url = :url and date = :date";
+    $stmt = $this->db->prepare($req);
+    $stmt->execute(array(":url" => $rss->url(),
+                         ":date" => $rss->date()));
+    $tab = $stmt->fetchAll(PDO::FETCH_NUM);
+    return $tab[0][0];
+  }
+
+  function getRSS($id): RSS{
+    $req = "select url from rss where id = :id";
+    $stmt = $this->db->prepare($req);
+    $stmt->execute(array(":id" => $id));
+    $tab = $stmt->fetch(PDO::FETCH_NUM);
+    $rss = $this->readRSSfromURL($tab[0]);
+    return $rss;
   }
 
   //////////////////////////////////////////////////////////
@@ -160,7 +164,7 @@ class DAO {
                          ":mp" => $mp));
   }
 
-  /**
+  /** A ameliorer pour prevenir si l'abonnement est déjà fait
    * Vérifie qu'un flux existe et l'ajoute à la liste des abonnements
    * @param  string $urlRSS url du flux
    * @param  string $login  login
@@ -168,9 +172,17 @@ class DAO {
    */
   function abonnement($urlRSS, $login): bool{
     if($this->urlExists($urlRSS)){
-      $this->createRSS($urlRSS);
-      // a finir
-      $req = "insert into abonnement values";
+      $rss = $this->createRSS($urlRSS);
+
+      $rssID = $this->getRSSID($rss);
+      $titre = $rss->titre();
+
+      $req = "insert into abonnement values (:login, :rssID, :titre, null)";
+      $stmt = $this->db->prepare($req);
+      $stmt->execute(array(":login" => $login,
+                           ":rssID" => $rssID,
+                           ":titre" => $titre));
+
       return true;
     }
     return false;
@@ -190,5 +202,23 @@ class DAO {
     }else {
       return false;
     }
+  }
+
+  /**
+   * Retourne un tableau d'objects RSS correspondant aux abonnement de $login
+   * @param  [string] $login [login de l'utilisateur]
+   * @return [array<RSS>]        [RSS correspondant aux abo]
+   */
+  function getAbonnements($login){
+    $req = "select RSS_id from abonnement where utilisateur_login = :login";
+    $stmt = $this->db->prepare($req);
+    $stmt->execute(array(":login" => $login));
+    $tab = $stmt->fetchAll(PDO::FETCH_NUM);
+    foreach ($tab as $key => $value) {
+      //méthode à créer
+      $rss = $this->getRSS($value[0]);
+      $tabRSS[] = $rss;
+    }
+    return $tabRSS ?? array();
   }
 }
