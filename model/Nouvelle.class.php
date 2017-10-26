@@ -54,10 +54,10 @@
       $this->urlImage = $node->attributes->getNamedItem('url')->textContent;
       $this->nomLocalImage = $nomLocal.".jpg";
 
-
-      if(!file_exists("../images/".$this->nomLocalImage)){
+      //obligé de télécharger l'image dans tous les cas, pas d'update sinon
+      //if(!file_exists("../images/".$this->nomLocalImage)){
         file_put_contents("../images/".$this->nomLocalImage, file_get_contents($this->urlImage));
-      }
+      //}
     }
 
     function update(DOMElement $item){
