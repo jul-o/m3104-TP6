@@ -21,8 +21,7 @@ pageNouvelle:
 
 
 
-A FAIRE : Bouton home
-  Bouton se désabonner
+A FAIRE : Bouton de déconnexion
 
 PLUS TARD : proposer un catalogue de flux
   effacage des images dépassant une certaine date

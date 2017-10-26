@@ -10,6 +10,7 @@
       <div class="abonnement">
         <a href="RSS.ctrl.php?id=<?=$dao->getRSSID($value)?>"><img src="../images/<?=$value->nouvelles()[0]->nomLocalImage()?>" alt="<?=$value->titre()?>">
         <h2><?=$value->titre()?></h2></a>
+        <a href="unsub.ctrl.php?id=<?=$dao->getRSSID($value)?>"><p>Se désabonner</p></a>
         <hr>
       </div>
     <?php endforeach ?>

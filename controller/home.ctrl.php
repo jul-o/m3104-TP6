@@ -2,8 +2,11 @@
   require_once("../model/DAO.class.php");
   session_start();
   $login = $_SESSION['login'];
-  echo"Bonjour ".$login;
+
+  $data['login'] = $login;
   $data['sub-success'] = $_GET['sub-success'] ?? -1;
+
+  require_once("../view/homeHead.view.php");
 
   //zone de texte pour ajouter un flux à ses abo
   require_once("../view/abonnement.view.php");

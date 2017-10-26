@@ -221,4 +221,17 @@ class DAO {
     }
     return $tabRSS ?? array();
   }
+
+  /**
+   * désabonne l'utilisateur de login $login du flux d'id $rssID
+   * @param  [string] $login [login de l'utilisateur]
+   * @param  [string] $rssID [id du RSS duquel se désabonner]
+   */
+  function unsub($login, $rssID){
+    $req = "delete from abonnement where utilisateur_login = :login and RSS_id = :rssID";
+    $stmt = $this->db->prepare($req);
+    $stmt->execute(array(":login" => $login,
+                         ":rssID" => $rssID));
+
+  }
 }
