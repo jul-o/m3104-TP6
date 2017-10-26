@@ -25,3 +25,4 @@ A FAIRE : Bouton home
   Bouton se désabonner
 
 PLUS TARD : proposer un catalogue de flux
+  effacage des images dépassant une certaine date

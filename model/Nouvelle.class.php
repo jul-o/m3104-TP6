@@ -55,9 +55,9 @@
       $this->nomLocalImage = $nomLocal.".jpg";
 
       //obligé de télécharger l'image dans tous les cas, pas d'update sinon
-      //if(!file_exists("../images/".$this->nomLocalImage)){
+      if(!file_exists("../images/".$this->nomLocalImage)){
         file_put_contents("../images/".$this->nomLocalImage, file_get_contents($this->urlImage));
-      //}
+      }
     }
 
     function update(DOMElement $item){
@@ -82,7 +82,8 @@
       $nodeList = $item->getElementsByTagName('enclosure');                                    //
       if($nodeList->length != 0){                                                              //si il y a une "feuille"
         $node = $nodeList->item(0);
-        $nomLocal = $titreRSS.$numImage;
+        //$nomLocal = $titreRSS.$numImage;
+        $nomLocal = $this->titre;
                                                                   //télécharge une image et met à jour l'url image
         $this->downloadImage($node, $nomLocal);                                             //
 
