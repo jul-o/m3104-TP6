@@ -15,7 +15,7 @@
       <input type="submit" value="Valider">
     </form>
     <form class="abonnement" action="abonnementListe.ctrl.php" method="post">
-      <p>...ou sélectionnez-en un içi</p>
+      <p>...ou sélectionnez-en un ici</p>
       <select name="rss">
       <?php foreach ($data['fluxConnus'] as $key => $value): ?>
         <option><?=$value[0]?></option>

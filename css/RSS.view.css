@@ -2,3 +2,16 @@ header a img{
   max-width: 50px;
   max-height: 50px;
 }
+
+.nouvelle{
+  width: 30%;
+  height: 30%;
+  display: inline-block;
+  margin-left: 2.5%;
+}
+
+
+.nouvelle img{
+  max-width: 100%;
+  max-height: 350px;
+}

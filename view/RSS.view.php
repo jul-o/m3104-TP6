@@ -15,8 +15,7 @@
         <a href="<?=$value->url()?>">
           <div class="nouvelle">
             <h2><?=$value->titre()?></h2>
-            <h3><?=$value->description()?></h3>
-            <img src="<?="../images/".$value->nomLocalImage()?>" alt="dsl pa dimaj">
+            <img src="<?="../model/data/images/".$value->nomLocalImage()?>" alt="Image non disponible">
           </div>
         </a>
       <?php endforeach; ?>

@@ -1,7 +1,11 @@
 <?php
   require_once("../model/DAO.class.php");
+
   session_start();
   $login = $_SESSION['login'];
+
+  //met à jour la base de données
+  $dao->updateDB();
 
   $data['login'] = $login;
   $data['sub-success'] = $_GET['sub-success'] ?? -1;

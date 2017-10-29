@@ -68,7 +68,7 @@ class DAO {
   }
 
   function getRSSID($rss): int{
-    $req = "select id from rss where url = :url and date = :date";
+    $req = "select id from RSS where url = :url and date = :date";
     $stmt = $this->db->prepare($req);
     $stmt->execute(array(":url" => $rss->url(),
                          ":date" => $rss->date()));
@@ -236,7 +236,7 @@ class DAO {
    * @param  [string] $rssID [id du RSS duquel se désabonner]
    */
   function unsub($login, $rssID){
-    $req = "delete from abonnement where utilisateur_login = :login and RSS_id = :rssID";
+    $req = "DELETE from abonnement where utilisateur_login = :login and RSS_id = :rssID";
     $stmt = $this->db->prepare($req);
     $stmt->execute(array(":login" => $login,
                          ":rssID" => $rssID));
@@ -249,5 +249,18 @@ class DAO {
     $stmt->execute();
     $tab = $stmt->fetchAll(PDO::FETCH_NUM);
     return $tab;
+  }
+
+  function updateDB(){
+    $req = "SELECT id from RSS";
+    $stmt = $this->db->prepare($req);
+    $stmt->execute();
+    $tab = $stmt->fetchAll(PDO::FETCH_NUM);
+
+    foreach ($tab as $key => $value) {
+      $rss = $this->getRSS($value[0]);
+      $rss->update();
+      $this->updateRSS($rss);
+    }
   }
 }

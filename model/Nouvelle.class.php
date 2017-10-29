@@ -55,8 +55,8 @@
       $this->nomLocalImage = $nomLocal.".jpg";
 
       //obligé de télécharger l'image dans tous les cas, pas d'update sinon
-      if(!file_exists("../images/".$this->nomLocalImage)){
-        file_put_contents("../images/".$this->nomLocalImage, file_get_contents($this->urlImage));
+      if(!file_exists("../model/data/images/".$this->nomLocalImage)){
+        file_put_contents("../model/data/images/".$this->nomLocalImage, file_get_contents($this->urlImage));
       }
     }
 

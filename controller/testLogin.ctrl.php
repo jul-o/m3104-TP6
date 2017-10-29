@@ -1,5 +1,6 @@
 <?php
   require_once("../model/DAO.class.php");
+  
   $login = $_POST['login'] ?? NULL;
   $psswd = $_POST['psswd'] ?? NULL;
   if($login != NULL && $psswd != NULL){

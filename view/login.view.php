@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Page de login pour le super site de rss c'est cool poce blô</title>
+    <title>Login</title>
   </head>
   <body>
     <?php if($data['idIncorrect'] == 1):?>
