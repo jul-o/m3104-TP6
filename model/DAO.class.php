@@ -67,6 +67,11 @@ class DAO {
     }
   }
 
+/**
+ * Récupère l'identifiant du flux RSS à partir du
+ * @param  flux RSS $rss
+ * @return int
+ */
   function getRSSID($rss): int{
     $req = "select id from RSS where url = :url and date = :date";
     $stmt = $this->db->prepare($req);
@@ -76,6 +81,12 @@ class DAO {
     return $tab[0][0];
   }
 
+
+/**
+ * Récupère le flux RSS à partir de
+ * @param  son identifiant $id
+ * @return le flux RSS
+ */
   function getRSS($id): RSS{
     $req = "select url from rss where id = :id";
     $stmt = $this->db->prepare($req);
@@ -85,6 +96,11 @@ class DAO {
     return $rss;
   }
 
+/**
+ * Récupère l'url du flux RSS à partir
+ * @param  de son nom $name
+ * @return un url
+ */
   function getURLRSSFromName($name){
     $req = "select url from RSS where titre = :name";
     $stmt = $this->db->prepare($req);
@@ -143,6 +159,11 @@ class DAO {
                          ":image" => $image));
   }
 
+/**
+ * Vérifie si le login existe dans la BD
+ * @param  $nom le login à vérifier
+ * @return bool vrai si le login existe
+ */
   function loginExists($nom){
     $query = "SELECT login from utilisateur where login = :nom";
     $stmt=$this->db->prepare($query);
@@ -152,9 +173,10 @@ class DAO {
   }
 
   /**
-   * vérifie que le login est dans les utilisateurs de la BD
-   * @param  $nom le login entré
-   * @return bool true si il y est, false sinon
+   * Vérifie que le couple login mot de passe existe dans la BD
+   * @param  $nom   le login entré
+   * @param  $psswd le mot de passe entré
+   * @return bool vrai si le couple existe
    */
   function correctPassword($nom, $psswd){
     $query = "select login from utilisateur where login = :nom and mp = :psswd";
@@ -165,6 +187,12 @@ class DAO {
     return (isset($tab[0]));
   }
 
+
+/**
+ * Crée dans la BD le nouveau couple Login Mot de passe
+ * @param  $nom le login créé
+ * @param  $mp  le mot de passe créé
+ */
   function inscription($nom, $mp){
     $query = "INSERT INTO utilisateur VALUES (:login, :mp)";
     $stmt = $this->db->prepare($query);
@@ -172,11 +200,10 @@ class DAO {
                          ":mp" => $mp));
   }
 
-  /** A ameliorer pour prevenir si l'abonnement est déjà fait
-   * Vérifie qu'un flux existe et l'ajoute à la liste des abonnements
+  /** Vérifie qu'un flux existe et l'ajoute à la liste des abonnements
    * @param  string $urlRSS url du flux
    * @param  string $login  login
-   * @return bool           abo réussi
+   * @return bool vrai si l'abonnement a réussi
    */
   function abonnement($urlRSS, $login): bool{
     if($this->urlExists($urlRSS)){
@@ -243,6 +270,10 @@ class DAO {
 
   }
 
+/**
+ * Récupère le titre et l'url des différents flux RSS connus
+ * @return tableau de couples titre url
+ */
   function getFluxConnus(){
     $req = "select titre, url from rss";
     $stmt = $this->db->prepare($req);
@@ -251,6 +282,9 @@ class DAO {
     return $tab;
   }
 
+/**
+ * Met à jour les flux RSS et la date de mise à jour dans la BD
+ */
   function updateDB(){
     $req = "SELECT id from RSS";
     $stmt = $this->db->prepare($req);

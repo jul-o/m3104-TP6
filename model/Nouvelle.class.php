@@ -59,7 +59,10 @@
         file_put_contents("../model/data/images/".$this->nomLocalImage, file_get_contents($this->urlImage));
       }
     }
-
+/**
+ * Met à jour un flux RSS à partir d'un
+ * @param  DOMElement $item
+ */
     function update(DOMElement $item){
       $this->titre = $item->getElementsByTagName('title')->item(0)->textContent;               //titre mis à jour
       $this->date = $item->getElementsByTagName('pubDate')->item(0)->textContent;              //date de publication mise à jour

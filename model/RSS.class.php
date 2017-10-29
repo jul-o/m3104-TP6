@@ -45,7 +45,7 @@ class RSS {
     $this->nouvelles = array();
 
     //supprime les images local du précédant flux
-    /*$mask = "../images/".$this->titre."*";
+    /*$mask = "..model/data/images/".$this->titre."*";
     array_map("unlink", glob($mask));*/
 
   //Crée et met à jour les nouvelles à partir du flux
